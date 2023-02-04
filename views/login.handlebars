@@ -1,4 +1,6 @@
 <form id="login-form">
+    login here
+    <div id="errors"></div>
     <div>
         Username: <input type="text" id="username" placeholder="Enter Username Here">
     </div>
@@ -10,12 +12,27 @@
     </button>
 </form>
 
+<form id="signup-form">
+    signup here
+    <div id="signup-errors"></div>
+    <div>
+        Username: <input type="text" id="username-signup" placeholder="Enter Username Here">
+    </div>
+     <div>
+        Password: <input type="password" id="password-signup" placeholder="Enter Password Here">
+    </div>
+    <button>
+        Signup!
+    </button>
+</form>
+
 <script>
     document.getElementById('login-form').addEventListener('submit', (event) => {
         event.preventDefault();
 
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
+        document.getElementById("errors").textContent = "";
 
 
         fetch("/api/user/login", {
@@ -28,6 +45,39 @@
                 password,
             }),
 
-        });
+        }).then((result) => {
+            if(!result.ok){
+                document.getElementById("errors").textContent = "Unable to login";
+            } else {
+                return result.json();
+            }
+        })
+    });
+
+    document.getElementById('signup-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const username = document.getElementById('username-signup').value;
+        const password = document.getElementById('password-signup').value;
+        document.getElementById("signup-errors").textContent = "";
+
+
+        fetch("/api/user", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username,
+                password,
+            }),
+
+        }).then((result) => {
+            if(!result.ok){
+                document.getElementById("signup-errors").textContent = "Unable to create user";
+            } else {
+                return result.json();
+            }
+        })
     });
 </script>
