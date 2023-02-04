@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/bbwax/CMS_style_blog_MVC#readme",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.7",
-    "nodemon": "^2.0.20"
+    "mysql2": "^3.1.0",
+    "nodemon": "^2.0.20",
+    "sequelize": "^6.28.0"
   }
 }
