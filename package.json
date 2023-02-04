@@ -1,0 +1,24 @@
+{
+  "name": "cms_style_blog_mvc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bbwax/CMS_style_blog_MVC.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bbwax/CMS_style_blog_MVC/issues"
+  },
+  "homepage": "https://github.com/bbwax/CMS_style_blog_MVC#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.7",
+    "nodemon": "^2.0.20"
+  }
+}
