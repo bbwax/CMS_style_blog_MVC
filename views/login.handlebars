@@ -49,7 +49,7 @@
             if(!result.ok){
                 document.getElementById("errors").textContent = "Unable to login";
             } else {
-                return result.json();
+                window.location.replace('/');
             }
         })
     });

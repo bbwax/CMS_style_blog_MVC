@@ -3,6 +3,8 @@ const express = require("express");
 
 const { engine } = require('express-handlebars');
 
+const cookieParser = require('cookie-parser');
+
 const sequelize = require('./config/connection')
 
 const mainRouter = require("./controllers");
@@ -15,6 +17,8 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use(mainRouter);
 

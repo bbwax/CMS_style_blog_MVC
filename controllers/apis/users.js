@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const jwt = require("jsonwebtoken");
 
 const User = require('../../models/User');
 
@@ -23,9 +24,9 @@ usersRouter.post("/login", async (req, res) => {
         return;
     }
 
-    // const token = jwt.sign({ id: user.id }, process.env.JWT_KEY);
+    const token = jwt.sign({ id: user.id }, process.env.JWT_KEY);
 
-    // res.cookie('logintoken', token, { httpOnly: true });
+    res.cookie('logintoken', token, { httpOnly: true });
 
 
     res.end();
