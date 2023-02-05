@@ -1,6 +1,7 @@
 const { Router } = require("express");
 
 const auth = require('../middleware/auth');
+const optionalAuth = require('../middleware/optionalAuth');
 const Post = require('../models/Post');
 const { post } = require("./apis/users");
 
@@ -30,7 +31,7 @@ pathRouter.get('/login', (req, res) => {
     res.render('login');
 });
 
-pathRouter.get('/post/:id', async (req, res) => {
+pathRouter.get('/post/:id', optionalAuth, async (req, res) => {
     const { id } = req.params;
     const post = await Post.findByPk(id);
 
@@ -42,7 +43,8 @@ pathRouter.get('/post/:id', async (req, res) => {
 
     res.render('post', {
         post: plainPost,
-        isCreator: req.user.id === post.creator_id,
+        isCreator: req.user?.id === post.creator_id,
+        isLoggedIn: !!req.user,
     });
 
 });
