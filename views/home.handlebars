@@ -5,9 +5,11 @@
     <div>
         {{#each posts as |post|}}
             <div>
-                <span>{{post.title}}</span>
-                <span>By {{user.username}} at {{post.date_created}}</span>
-                <span>{{post.content}}</span>
+                <a href="/post/{{post.id}}">
+                    <span>{{post.title}}</span>
+                    <span>By {{user.username}} at {{post.date_created}}</span>
+                    <span>{{post.content}}</span>
+                </a>
             </div>
 
         {{/each}}
