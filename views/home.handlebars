@@ -24,10 +24,22 @@
             <button id="create-post-button">Create a Post</button>
             
         </form>
+        <div>
+            {{#if isLoggedIn}}
+                <button id="logout-button">Logout</button>
+            {{/if}}
+        </div>
+        
     </div>
 </div>
 
 <script>
+
+    document.getElementById("logout-button").addEventListener("click", () => {
+        window.location.replace('/login');
+    });
+
+
     document.getElementById("post-form").addEventListener("submit", (event) => {
         event.preventDefault();
 

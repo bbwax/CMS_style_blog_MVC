@@ -14,7 +14,7 @@ postsRouter.post('/', auth, async (req, res) => {
         title,
         content,
         date_created,
-        creator_id: req.user.id,
+        userId: req.user.id,
     });
 
     res.json({

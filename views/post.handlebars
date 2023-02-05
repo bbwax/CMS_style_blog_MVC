@@ -1,6 +1,6 @@
 <div>
-    
-    <div>
+
+    <div id='post-card'>
         <span>{{post.title}}</span>
         <span>{{post.content}}</span>
         <span>{{better_date post.date_created}}</span>
@@ -8,34 +8,51 @@
         <a href="/post/{{post.id}}/edit">Edit Post</a>
         {{/if}}
     </div>
+
+
     <div>
         {{#if isLoggedIn}}
-            {{#unless isCreator}}
-                <form id="comment-form">
-                    <div id="comment-errors"></div>
-                    <div>Comment on this post</div>
-                    <div> <input type="text" id="comment-text"></div>
-                    <button id="comment-button">
-                        Send Comment
-                    </button>
-                </form>
-                <script>
-                    document.getElementById("comment-form").addEventListener("submit", (event) => {
-                        event.preventDefault();
+        {{#unless isCreator}}
+        <div class='comment-card'>
+            {{#each userComments as |userComments| }}
+                <div>
+                    {{userComments.comment_text}}
+                </div>
 
-                        const comment = document.getElementById("comment-text").value;
+            {{/each}}
 
-                        fetch("/api/comment", {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                comment_text: comment,
+
+        </div>
+        <div>
+            <form id="comment-form">
+                <div id="comment-errors"></div>
+                <div>{{#if userComments}} Update your {{/if}}Comment on this post</div>
+                <div> <input type="text" id="comment-text"></div>
+                <button id="comment-button">
+                    Send Comment
+                </button>
+            </form>
+
+        </div>
+
+        <script>
+            document.getElementById("comment-form").addEventListener("submit", (event) => {
+                event.preventDefault();
+
+                const comment = document.getElementById("comment-text").value;
+
+                fetch("/api/comment", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        comment_text: comment,
+                        postId: {{ post.id }},
                             }),
                         }).then((result) => {
-                            if(!result.ok){
-                                document.getElementById("comment-errors").textContent = "Unable to Comment";
+                            if (!result.ok) {
+                                document.getElementById("comment-errors").textContent = "Error with Comment";
                             } else {
                                 window.location.reload();
                             }
@@ -43,8 +60,8 @@
 
 
                     });
-                </script>
-            {{/unless}}
+        </script>
+        {{/unless}}
         {{/if}}
     </div>
 </div>

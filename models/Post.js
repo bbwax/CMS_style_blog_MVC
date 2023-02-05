@@ -18,7 +18,7 @@ Post.init(
             type: DataTypes.DATE,
             allowNull: false,
         },
-        creator_id: {
+        userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
         //     references: {
