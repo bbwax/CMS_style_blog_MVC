@@ -13,6 +13,10 @@ pathRouter.get('/', async (req, res) => {
 
         const {id} = data;
         const user = await User.findByPk(id);
+        if (!user){
+            res.redirect('/login');
+            return;
+        }
         const plainUser = user.get({ plain: true});
 
         console.log(data);

@@ -5,10 +5,7 @@ class Post extends Model {};
 
 Post.init(
     {
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
+        
         title: {
             type: DataTypes.TEXT,
             allowNull: false,
@@ -24,11 +21,11 @@ Post.init(
         creator_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            references: {
-                model: 'user',
-                key: 'id',
-              },
-        },
+        //     references: {
+        //         model: 'user',
+        //         key: 'id',
+        //       },
+         },
 
     },
     {

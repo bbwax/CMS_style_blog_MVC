@@ -1,11 +1,11 @@
-const { Router } = require('express');
+const router = require('express').Router();
 const jwt = require("jsonwebtoken");
 
-const User = require('../../models/User');
+const { User } = require('../../models');
 
-const usersRouter = new Router();
 
-usersRouter.post("/login", async (req, res) => {
+
+router.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
     const user = await User.findOne({
@@ -32,7 +32,7 @@ usersRouter.post("/login", async (req, res) => {
     res.end();
 });
 
-usersRouter.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
     const { username, password } = req.body;
 
     const user = await User.findOne({
@@ -57,4 +57,4 @@ usersRouter.post('/', async (req, res) => {
     });
 })
 
-module.exports = usersRouter;
+module.exports = router;

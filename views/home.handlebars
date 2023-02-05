@@ -1,1 +1,44 @@
-welcome {{user.username}}
+<div> Welcome, {{user.username}} !</div>
+
+<div> 
+    <div>
+        Create a Post!
+        <form id="post-form">
+            <div id="create-post-error"></div>
+            <div>Title: <input type="text" id="post-title" placeholder="Post Title"></div>
+            <div> Content: <textarea id="post-description" placeholder="Post Description"></textarea></div>
+
+            <button id="create-post-button">Create a Post</button>
+            
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("post-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const title = document.getElementById("post-title").value;
+        const content = document.getElementById("post-description").value;
+
+        fetch('/api/post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title,
+                content,
+
+            }),
+        }).then((result) => {
+            if(!result.ok){
+                document.getElementById('create-post-error').textContent = "Could not create post";
+
+            } else {
+                console.log(body);
+                //window.location.reload();
+            }
+        })
+    });
+</script>
