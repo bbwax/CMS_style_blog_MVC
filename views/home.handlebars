@@ -1,6 +1,17 @@
 <div> Welcome, {{user.username}} !</div>
 
 <div> 
+    <div>Posts</div>
+    <div>
+        {{#each posts as |post|}}
+            <div>
+                <span>{{post.title}}</span>
+                <span>By {{user.username}} at {{post.date_created}}</span>
+                <span>{{post.content}}</span>
+            </div>
+
+        {{/each}}
+    </div>
     <div>
         Create a Post!
         <form id="post-form">
@@ -36,8 +47,8 @@
                 document.getElementById('create-post-error').textContent = "Could not create post";
 
             } else {
-                console.log(body);
-                //window.location.reload();
+                
+                window.location.reload();
             }
         })
     });
