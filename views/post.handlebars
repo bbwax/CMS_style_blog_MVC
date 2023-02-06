@@ -1,11 +1,18 @@
 <div>
 
-    <div id='post-card'>
-        <span>{{post.title}}</span>
-        <span>{{post.content}}</span>
-        <span>{{better_date post.date_created}}</span>
+    <div class="card p-5 m-5">
+        <div id="post-errors"></div>
+        <div class="card-header">
+            <span>{{better_date post.date_created}}</span>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">{{post.title}}</h3>
+            <span class="card-text">{{post.content}}</span>
+        </div>
+
+
         {{#if isCreator}}
-        <a href="/post/{{post.id}}/edit">Edit Post</a>
+        <button id="delete-post-button" class="btn btn-danger" style="color:black">Delete Post</a></button>
         {{/if}}
     </div>
 
@@ -13,24 +20,29 @@
     <div>
         {{#if isLoggedIn}}
         {{#unless isCreator}}
-        <div class='comment-card'>
+        <div class="justify-content-end">
             {{#each userComments as |userComments| }}
-                <div>
-                    {{userComments.comment_text}}
+            <div class=" card p-3 m-3" style="">
+                <div class="card-header text-right">User {{userComments.userId}} says:</div>
+                <div class="card-body">
+                    <div class="card-text text-right">{{userComments.comment_text}}</div>
                 </div>
+            </div>
 
             {{/each}}
 
 
         </div>
-        <div>
-            <form id="comment-form">
-                <div id="comment-errors"></div>
-                <div>{{#if userComments}} Update your {{/if}}Comment on this post</div>
-                <div> <input type="text" id="comment-text"></div>
-                <button id="comment-button">
-                    Send Comment
-                </button>
+        <div class="card-deck p-3 m-3" style="">
+            <form id="comment-form" class="card p-3 m-1">
+                <div class="form-group">
+                    <div id="comment-errors"></div>
+                    <div class="justify-content-center">Comment on this post</div>
+                    <div> <input type="text" id="comment-text"></div>
+                    <button id="comment-button" class="btn btn-primary">
+                        Send Comment
+                    </button>
+                </div>
             </form>
 
         </div>
@@ -65,3 +77,18 @@
         {{/if}}
     </div>
 </div>
+
+<script>
+    document.getElementById("delete-post-button").addEventListener("click", (event) => {
+        event.preventDefault();
+
+        fetch("/api/post/{{post.id}}/delete", {
+            method: 'DELETE',
+        })
+            .then( window.location.replace('/profile'));
+                
+             
+
+
+    });
+</script>

@@ -1,20 +1,28 @@
-<div> Welcome, {{user.username}} !</div>
+{{#if isLoggedIn}}
+    <div> 
+        <h2 class="h2 d-flex justify-content-center">Welcome, {{user.username}} !</h2> 
+    </div>
+{{/if}}
 
-<div> 
-    <div>Posts</div>
+
+<div>
     <div>
         {{#each posts as |post|}}
-            <div>
-                <a href="/post/{{post.id}}">
-                    <span>{{post.title}}</span>
-                    <span>By {{user.username}} at {{better_date post.date_created}}</span>
-                    <span>{{post.content}}</span>
-                </a>
+        <div class="card p-5 m-5">
+            <div class="card-header">
+                <span>By {{post.userId}} at {{better_date post.date_created}}</span>
             </div>
+            <div class="card-body">
+                <h3 class="card-title" >{{post.title}}</h3>
+                <span class="card-text">{{post.content}}</span>
+            </div>
+            
+            <button><a href="/post/{{post.id}}">Select Post</a></button>
+        </div>
 
         {{/each}}
     </div>
-    <div>
+    {{!-- <div>
         Create a Post!
         <form id="post-form">
             <div id="create-post-error"></div>
@@ -22,48 +30,16 @@
             <div> Content: <textarea id="post-description" placeholder="Post Description"></textarea></div>
 
             <button id="create-post-button">Create a Post</button>
-            
+
         </form>
-        <div>
-            {{#if isLoggedIn}}
-                <button id="logout-button">Logout</button>
-            {{/if}}
-        </div>
-        
-    </div>
+
+    </div> --}}
+
 </div>
 
 <script>
 
-    document.getElementById("logout-button").addEventListener("click", () => {
-        window.location.replace('/login');
-    });
+   
 
-
-    document.getElementById("post-form").addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const title = document.getElementById("post-title").value;
-        const content = document.getElementById("post-description").value;
-
-        fetch('/api/post', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                title,
-                content,
-
-            }),
-        }).then((result) => {
-            if(!result.ok){
-                document.getElementById('create-post-error').textContent = "Could not create post";
-
-            } else {
-                
-                window.location.reload();
-            }
-        })
-    });
+   
 </script>

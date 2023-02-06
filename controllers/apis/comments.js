@@ -35,8 +35,6 @@ commentRouter.post('/', auth, async (req, res) => {
 
 });
 
-// postsRouter.put('/', auth, async (req, res) => {
 
-// })
 
 module.exports = commentRouter;

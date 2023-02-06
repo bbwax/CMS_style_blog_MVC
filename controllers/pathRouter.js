@@ -12,14 +12,37 @@ pathRouter.get('/', auth, async (req, res) => {
     const plainUser = req.user.get({ plain: true});
 
     const posts = await Post.findAll({
+        // where: {
+        //     userId: req.user.id,
+        // },
+    });
+
+    const plainPosts = posts.map((post) => post.get({plain: true}));
+    //console.log("plain user", plainUser);
+
+    res.render('home', {
+        user: plainUser,
+        posts: plainPosts,
+        isLoggedIn: !!req.user,
+    });
+    
+    
+});
+
+pathRouter.get('/profile', auth, async (req, res) => {
+    
+    const plainUser = req.user.get({ plain: true});
+
+    const posts = await Post.findAll({
         where: {
             userId: req.user.id,
         },
     });
 
     const plainPosts = posts.map((post) => post.get({plain: true}));
+    console.log("plain user", plainUser);
 
-    res.render('home', {
+    res.render('profile', {
         user: plainUser,
         posts: plainPosts,
         isLoggedIn: !!req.user,
@@ -57,7 +80,7 @@ pathRouter.get('/post/:id', optionalAuth, async (req, res) => {
     }
 
 
-    console.log("user comments", userComments);
+    //console.log("user comments", userComments);
     userComments = userComments.map((comment)=> comment.get({simple:true}))
 
     res.render('post', {
