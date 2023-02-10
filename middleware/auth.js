@@ -18,10 +18,14 @@ module.exports = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
+        console.log("error");
         if (error.message === "invalid token"){
             res.redirect('/login');
         } else {
-            res.status(500).end("Page Broken :(");
+            //res.status(500).end("Page Broken :(");
+            
+            res.redirect('/login');
+            
         }
     }
 }

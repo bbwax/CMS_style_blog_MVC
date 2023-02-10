@@ -19,6 +19,7 @@ module.exports = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
+        console.log('optional auth', error)
         if (error.message === "invalid token"){
             next();
         } else {
