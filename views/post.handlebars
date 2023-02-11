@@ -21,13 +21,16 @@
         {{#if isLoggedIn}}
         {{#unless isCreator}}
         <div class="justify-content-end">
-            {{#each userComments as |userComments| }}
+            {{#each userComments as |userComment| }}
             <div class=" card p-3 m-3" style="">
-                <div class="card-header text-right">User {{userComments.userId}} says:</div>
+                <div class="card-header text-right">User {{userComment.userId}} says:</div>
                 <div class="card-body">
-                    <div class="card-text text-right">{{userComments.comment_text}}</div>
+                    <div class="card-text text-right">{{userComment.comment_text}}</div>
                 </div>
+                <button class="delete-comment-button" data-commentid="{{userComment.id}}" class="btn btn-danger"
+                    style="color:black">X</a></button>
             </div>
+
 
             {{/each}}
 
@@ -72,6 +75,22 @@
 
 
                     });
+            const buttons = document.getElementsByClassName("delete-comment-button");
+            console.log(buttons)
+            for(let i =0; i < buttons.length ; i++){
+                const btn = buttons[i]
+                console.log("btn", btn)
+                btn.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    console.log("evt",event, event.target);
+                    const commentId = event.target.getAttribute('data-commentid');
+                    fetch(`/api/comment/${commentId}/delete`, {
+                        method: 'DELETE',
+                    })
+                        .then(window.location.replace('/post/{{ post.id}}'));
+                })
+            }
+            ;
         </script>
         {{/unless}}
         {{/if}}
@@ -85,10 +104,8 @@
         fetch("/api/post/{{post.id}}/delete", {
             method: 'DELETE',
         })
-            .then( window.location.replace('/profile'));
-                
-             
-
-
+            .then(window.location.replace('/profile'));
     });
+
+
 </script>

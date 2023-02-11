@@ -6,21 +6,21 @@
 <div>
 
     <div>
-        {{#each posts as |post|}}
+        {{#each posts as |userPost|}}
         <div class="card p-5 m-5">
             <div class="card-header">
-                <span>By {{post.userId}} at {{better_date post.date_created}}</span>
+                <span>By {{userPost.user.username}} at {{better_date userPost.post.date_created}}</span>
             </div>
             <div class="card-body">
-                <h3 class="card-title">{{post.title}}</h3>
+                <h3 class="card-title">{{userPost.post.title}}</h3>
 
-                <span class="card-text">{{post.content}}</span>
+                <span class="card-text">{{userPost.post.content}}</span>
 
             </div>
 
 
 
-            <button><a href="/post/{{post.id}}" style="color:black">Select Post</a></button>
+            <button><a href="/post/{{userPost.post.id}}" style="color:black">Select Post</a></button>
         </div>
 
         {{/each}}

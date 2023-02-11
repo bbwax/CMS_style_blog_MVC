@@ -16,7 +16,8 @@
             <ul class="nav nav-pills ">
                 <li class="nav-item"><a class="navbar-brand" href="/profile">Profile</a></li>
                 <li class="nav-item"><a class="navbar-brand" href="/">Home</a></li>
-                <li class="nav-item"><a class="navbar-brand" href="/login">Login/Logout</a></li>
+                <li class="nav-item"><a class="navbar-brand" href="/login">Login</a></li>
+                <li class="nav-item navbar-brand" ><button id="logout-button"> Logout</button></li>
             </ul>
         </nav>
     </header>
@@ -29,5 +30,28 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+     document.getElementById('logout-button').addEventListener('click', (event) => {
+        event.preventDefault();
+
+
+        fetch("/logout", {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+
+        }).then((result) => {
+            if (!result.ok) {
+                document.getElementById("errors").textContent = "Unable to login";
+            } else {
+                alert('Logged Out');
+
+                window.location.replace('/login');
+                
+            }
+        })
+    });
+</script>
 
 </html>

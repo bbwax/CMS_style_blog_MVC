@@ -6,6 +6,10 @@ module.exports = async (req, res, next) => {
     const { logintoken } = req.cookies;
 
     try{
+        if (!logintoken){
+            next();
+            return;
+        }
         const data = jwt.verify(logintoken, process.env.JWT_KEY);
 
         const {id} = data;
@@ -18,7 +22,7 @@ module.exports = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        console.log("error");
+        console.log("error",error);
         if (error.message === "invalid token"){
             res.redirect('/login');
         } else {

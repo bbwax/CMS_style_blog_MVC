@@ -2,13 +2,21 @@ const { Router } = require("express");
 
 const auth = require('../middleware/auth');
 const optionalAuth = require('../middleware/optionalAuth');
-const {Post, Comment} = require('../models');
+const {Post, Comment, User} = require('../models');
 const { post } = require("./apis/users");
 
 const pathRouter = new Router();
 
 pathRouter.get('/', auth, async (req, res) => {
-    
+    if(!req.user){
+        res.render('home', {
+            user: null,
+            posts: [],
+            isLoggedIn: !!req.user,
+            
+        });
+        return;
+    }
     const plainUser = req.user.get({ plain: true});
 
     const posts = await Post.findAll({
@@ -19,10 +27,15 @@ pathRouter.get('/', auth, async (req, res) => {
 
     const plainPosts = posts.map((post) => post.get({plain: true}));
     //console.log("plain user", plainUser);
+    const userPosts = await Promise.all(plainPosts.map(async (pp)=>{
+        const user = await User.findByPk(pp.userId);
+        const pUser = user.get({plain:true});
+        return {user:pUser,post:pp};
+    }));
 
     res.render('home', {
         user: plainUser,
-        posts: plainPosts,
+        posts: userPosts,
         isLoggedIn: !!req.user,
     });
     
@@ -30,6 +43,15 @@ pathRouter.get('/', auth, async (req, res) => {
 });
 
 pathRouter.get('/profile', auth, async (req, res) => {
+    if(!req.user){
+        res.render('login', {
+            user: null,
+            posts: [],
+            isLoggedIn: !!req.user,
+            
+        });
+        return;
+    }
     
     const plainUser = req.user.get({ plain: true});
 
@@ -40,11 +62,21 @@ pathRouter.get('/profile', auth, async (req, res) => {
     });
 
     const plainPosts = posts.map((post) => post.get({plain: true}));
+    const userPosts = [];
+    for(let i = 0; i < plainPosts.length;i++){
+      
+            const user = await User.findByPk(plainPosts[i].userId);
+            const pUser = user.get({plain:true});
+            const up =  {user:pUser,post:plainPosts[i]};
+      
+        userPosts.push(up)
+    }
+   
     console.log("plain user", plainUser);
 
     res.render('profile', {
         user: plainUser,
-        posts: plainPosts,
+        posts: userPosts,
         isLoggedIn: !!req.user,
     });
     
@@ -91,5 +123,19 @@ pathRouter.get('/post/:id', optionalAuth, async (req, res) => {
     });
 
 });
+
+pathRouter.delete('/logout', (req, res) => {
+    if (req.session) {
+      req.session.destroy(err => {
+        if (err) {
+          res.status(400).send('Unable to log out')
+        } else {
+          res.send('Logout successful')
+        }
+      });
+    } else {
+      res.end()
+    }
+  })
 
 module.exports = pathRouter;
